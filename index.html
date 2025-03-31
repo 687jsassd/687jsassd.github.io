@@ -45,13 +45,22 @@
         #timer {
             color: #666;
         }
+
+        .sub-btn {
+            padding: 8px,20px;
+            background-color: #4ecdc4;
+            border-radius: 20px;
+            margin-top: 15px;
+        }
+
     </style>
 </head>
 <body>
-    <h1>点击签到！</h1>
-    <button id="signBtn" onclick="handleClick()">0</button>
-    <div id="count">已签到：0 次</div>
-    <div id="timer"></div>
+    <h1 title="不要点我,点下面那个小球">点击签到！</h1>
+    <button title="点击签到!" id="signBtn" onclick="handleClick()">0</button>
+    <div title="哇奥!" id="count">已签到 0 次</div>
+    <div title= "我在等CD,你在等什么?" id="timer"></div>
+    <button title="qwq" class="sub-btn" onclick="resetCooldown()">不想等啦！</button>
 
     <script>
         // 初始化
@@ -72,7 +81,7 @@
         // 冷却
         function checkCooldown() {
             const now = Date.now();
-            const remaining = 60000 - (now - signData.lastSign);
+            const remaining = 10000 - (now - signData.lastSign);
             
             if (remaining > 0) {
                 signBtn.disabled = true;
@@ -88,12 +97,18 @@
         function handleClick() {
             const now = Date.now();
             
-            if (now - signData.lastSign > 60000) {
+            if (now - signData.lastSign > 10000) {
                 signData.count++;
                 signData.lastSign = now;
                 localStorage.setItem('signData', JSON.stringify(signData));
                 updateDisplay();
             }
+        }
+        // 重置按钮
+        function resetCooldown() {
+               signData.lastSign = 0; // 将 lastSign 设置为当前时间戳，即重置冷却时间为0秒后可签到。
+               localStorage.setItem('signData', JSON.stringify(signData)); // 更新本地存储。
+               updateDisplay(); // 更新显示。 
         }
 
         // 初始化
